@@ -1,72 +1,72 @@
-# Système de Collecte de Données de Surveillance Système
+# System Monitoring Data Collection Project
 
 ## 📋 Description
 
-Ce projet implémente un système complet de collecte et d'analyse de données de surveillance système composé d'un agent collecteur déployé sur des machines distantes et d'un serveur centralisé pour la réception et le stockage des données. Le système permet de monitorer en temps réel les performances et l'état des machines dans un environnement distribué.
+This project implements a comprehensive system monitoring data collection and analysis system composed of a collector agent deployed on remote machines and a centralized server for data reception and storage. The system enables real-time monitoring of machine performance and status in a distributed environment.
 
-## 🏗️ Architecture du Système
+## 🏗️ System Architecture
 
-### Composants Principaux
+### Main Components
 
-1. **Agent Collecteur (`agent.py`)** : Agent déployé sur chaque machine à surveiller
-2. **Serveur de Réception (`server.py`)** : Serveur centralisé pour la collecte des données
-3. **Outils d'Analyse** : Scripts pour l'analyse et la visualisation des données collectées
-4. **Traitement de Données Archivées** : Système de traitement des données zippées
+1. **Collector Agent (`agent.py`)** : Agent deployed on each machine to monitor
+2. **Reception Server (`server.py`)** : Centralized server for data collection
+3. **Analysis Tools** : Scripts for data analysis and visualization
+4. **Archived Data Processing** : System for processing zipped data
 
-### Architecture de Données
+### Data Architecture
 
-- **Données Statiques** : Informations sur la configuration matérielle (CPU, RAM, disque, BIOS, etc.)
-- **Données Variables** : Métriques de performance en temps réel (utilisation CPU/mémoire, trafic réseau, etc.)
-- **Base de Données MongoDB** : Stockage centralisé avec collections séparées pour les données statiques et variables
+- **Static Data** : Hardware configuration information (CPU, RAM, disk, BIOS, etc.)
+- **Variable Data** : Real-time performance metrics (CPU/memory usage, network traffic, etc.)
+- **MongoDB Database** : Centralized storage with separate collections for static and variable data
 
-## 🚀 Fonctionnalités
+## 🚀 Features
 
-### Agent Collecteur
-- ✅ Collecte automatique des données système (CPU, mémoire, disque, réseau)
-- ✅ Détection du type de machine (portable/desktop)
-- ✅ Surveillance de la batterie et température
-- ✅ Gestion des périphériques USB et interfaces réseau
-- ✅ Détection des seuils d'utilisation des ressources
-- ✅ Compression et envoi sécurisé des données
-- ✅ Gestion des reconnexions et retry automatique
-- ✅ Support multi-plateforme (Linux, Windows)
+### Collector Agent
+- ✅ Automatic system data collection (CPU, memory, disk, network)
+- ✅ Machine type detection (laptop/desktop)
+- ✅ Battery and temperature monitoring
+- ✅ USB devices and network interfaces management
+- ✅ Resource usage threshold detection
+- ✅ Compressed and secure data transmission
+- ✅ Automatic reconnection and retry management
+- ✅ Cross-platform support (Linux, Windows)
 
-### Serveur de Réception
-- ✅ Réception en temps réel des données des agents
-- ✅ Génération automatique d'ID machine unique
-- ✅ Stockage structuré dans MongoDB
-- ✅ Gestion des connexions concurrentes (max 50)
-- ✅ Nettoyage automatique des anciennes données
-- ✅ Validation des données avec Pydantic
-- ✅ Logging complet et gestion d'erreurs
+### Reception Server
+- ✅ Real-time data reception from agents
+- ✅ Automatic unique machine ID generation
+- ✅ Structured storage in MongoDB
+- ✅ Concurrent connection management (max 50)
+- ✅ Automatic cleanup of old data
+- ✅ Data validation with Pydantic
+- ✅ Comprehensive logging and error handling
 
-### Outils d'Analyse
-- 📊 Analyse complète des données statiques (matériel, OS, configurations)
-- 📈 Analyse des données variables (performances, utilisation ressources)
-- 📉 Génération de graphiques temporels pour les métriques clés
-- 🔍 Identification des jours d'activité maximale/minimale
+### Analysis Tools
+- 📊 Complete static data analysis (hardware, OS, configurations)
+- 📈 Variable data analysis (performance, resource usage)
+- 📉 Time-series graph generation for key metrics
+- 🔍 Maximum/minimum activity day identification
 
-## 📦 Installation et Configuration
+## 📦 Installation and Configuration
 
-### Prérequis
+### Prerequisites
 - Python 3.8+
 - MongoDB 4.4+
-- Packages Python : `pymongo`, `psutil`, `pydantic`, `matplotlib`, `GPUtil`, `backoff`
+- Python packages: `pymongo`, `psutil`, `pydantic`, `matplotlib`, `GPUtil`, `backoff`
 
-### Installation des Dépendances
+### Dependencies Installation
 ```bash
-pip install pymongo psutil pydantic matplotlib GPUtil backoff
+pip install -r requirements.txt
 ```
 
-### Configuration MongoDB
+### MongoDB Configuration
 ```bash
-# Démarrer MongoDB
+# Start MongoDB
 sudo systemctl start mongod
 sudo systemctl enable mongod
 ```
 
-### Configuration du Serveur
-1. Modifier les paramètres dans `server.py` :
+### Server Configuration
+1. Modify parameters in `server.py`:
 ```python
 SERVER_HOST = '0.0.0.0'
 SERVER_PORT = 12345
@@ -74,70 +74,70 @@ MONGO_HOST = 'localhost'
 MONGO_PORT = 27017
 ```
 
-2. Démarrer le serveur :
+2. Start the server:
 ```bash
 python3 server.py
 ```
 
-### Configuration de l'Agent
-1. Modifier l'adresse du serveur dans `agent.py` :
+### Agent Configuration
+1. Modify server address in `agent.py`:
 ```python
-SERVER_HOST = '192.168.1.165'  # IP du serveur
+SERVER_HOST = '192.168.1.165'  # Server IP
 SERVER_PORT = 12345
 ```
 
-2. Démarrer l'agent sur chaque machine :
+2. Start the agent on each machine:
 ```bash
 python3 agent.py
 ```
 
-## 📊 Utilisation des Outils d'Analyse
+## 📊 Analysis Tools Usage
 
-### Analyse des Données Statiques
+### Static Data Analysis
 ```bash
 python3 analyze_static_data.py
 ```
-Génère un rapport complet sur :
-- Types de machines (portable/desktop)
-- Configurations matérielles (CPU, RAM, disque)
-- Systèmes d'exploitation
-- Fabricants BIOS et cartes mères
+Generates a comprehensive report on:
+- Machine types (laptop/desktop)
+- Hardware configurations (CPU, RAM, disk)
+- Operating systems
+- BIOS and motherboard manufacturers
 
-### Analyse des Données Variables
+### Variable Data Analysis
 ```bash
 python3 analyze_variable_data.py
 ```
-Fournit des statistiques sur :
-- Jours d'activité maximale/minimale
-- Utilisation CPU, mémoire, disque
-- Trafic réseau et connectivité
-- Dépassements de seuils
+Provides statistics on:
+- Maximum/minimum activity days
+- CPU, memory, disk usage
+- Network traffic and connectivity
+- Threshold breaches
 
-### Génération de Graphiques
+### Graph Generation
 ```bash
 python3 plot_machine_metrics.py
 ```
-Crée des graphiques temporels pour :
-- Utilisation CPU
-- Consommation mémoire
-- Usage disque
-- Trafic réseau
-- Nombre de processus
-- Temps de fonctionnement
+Creates time-series graphs for:
+- CPU usage
+- Memory consumption
+- Disk usage
+- Network traffic
+- Process count
+- Uptime
 
-### Traitement de Données Archivées
+### Archived Data Processing
 ```bash
-python3 process_zipped_data.py /chemin/vers/archive.zip
+python3 process_zipped_data.py /path/to/archive.zip
 ```
 
-## 📁 Structure des Données
+## 📁 Data Structure
 
-### Collections MongoDB
-- `static_data` : Données de configuration matérielle
-- `variable_data` : Métriques de performance temps réel
-- `machine_ids` : Registre des machines surveillées
+### MongoDB Collections
+- `static_data` : Hardware configuration data
+- `variable_data` : Real-time performance metrics
+- `machine_ids` : Registry of monitored machines
 
-### Format des Données Statiques
+### Static Data Format
 ```json
 {
   "machine_id": "25f34bf2862b2bba82be3089eb7e2d65",
@@ -152,7 +152,7 @@ python3 process_zipped_data.py /chemin/vers/archive.zip
 }
 ```
 
-### Format des Données Variables
+### Variable Data Format
 ```json
 {
   "machine_id": "25f34bf2862b2bba82be3089eb7e2d65",
@@ -167,9 +167,9 @@ python3 process_zipped_data.py /chemin/vers/archive.zip
 }
 ```
 
-## 📈 Visualisations Générées
+## 📈 Generated Visualizations
 
-Le système génère automatiquement des graphiques dans le dossier `plots/` :
+The system automatically generates graphs in the `plots/` folder:
 - `cpu_usage_[machine_id]_[date].png`
 - `memory_usage_[machine_id]_[date].png`
 - `disk_usage_[machine_id]_[date].png`
@@ -177,47 +177,71 @@ Le système génère automatiquement des graphiques dans le dossier `plots/` :
 - `process_count_[machine_id]_[date].png`
 - `uptime_[machine_id]_[date].png`
 
-## 🔧 Configuration Avancée
+## 🔧 Advanced Configuration
 
-### Paramètres de l'Agent
-- `COLLECTION_INTERVAL` : Intervalle de collecte (défaut: 2s)
-- `SEND_INTERVAL` : Intervalle d'envoi (défaut: 30s)
-- `RESOURCE_THRESHOLD` : Seuil d'alerte ressources (défaut: 80%)
-- `STORAGE_LIMIT` : Limite stockage local (défaut: 200MB)
+### Agent Parameters
+- `COLLECTION_INTERVAL` : Collection interval (default: 2s)
+- `SEND_INTERVAL` : Send interval (default: 30s)
+- `RESOURCE_THRESHOLD` : Resource alert threshold (default: 80%)
+- `STORAGE_LIMIT` : Local storage limit (default: 200MB)
 
-### Paramètres du Serveur
-- `MAX_CONCURRENT_CONNECTIONS` : Connexions simultanées max (défaut: 50)
-- `DATA_RETENTION_DAYS` : Rétention données variables (défaut: 30 jours)
+### Server Parameters
+- `MAX_CONCURRENT_CONNECTIONS` : Max simultaneous connections (default: 50)
+- `DATA_RETENTION_DAYS` : Variable data retention (default: 30 days)
 
-## 📊 Données Collectées
+## 📊 Collected Data
 
-**[Le lien vers les données collectées sera ajouté ici]**
+The collected data is available in multiple formats:
 
-## 🐛 Dépannage
+### CSV Exports
+- **Machine Registry**: [`exports/machine_ids.csv`](exports/machine_ids.csv) - Complete list of monitored machines
+- **Static Data**: [`exports/static_data.csv`](exports/static_data.csv) - Hardware configurations and system information
+- **Variable Data**: [`exports/variable_data.csv`](exports/variable_data.csv) - Performance metrics and monitoring data
 
-### Problèmes Courants
-1. **Erreur de connexion MongoDB** : Vérifier que MongoDB est démarré
-2. **Agent ne se connecte pas** : Vérifier l'IP/port du serveur
-3. **Permissions insuffisantes** : Exécuter avec des privilèges appropriés pour certaines métriques
+### MongoDB Dump
+- **Complete Database**: [`exports/machine_monitoring/`](exports/machine_monitoring/) - Full MongoDB export in BSON format
+  - `machine_ids.bson` - Machine registry collection
+  - `static_data.bson` - Static data collection
+  - `variable_data.bson` - Variable data collection
+  - Associated metadata files (`.metadata.json`)
+
+### Sample Visualizations
+The `plots/` directory contains sample visualizations generated from the collected data:
+- CPU usage trends
+- Memory consumption patterns
+- Disk utilization
+- Network traffic analysis
+- Process count evolution
+- System uptime tracking
+
+## 🐛 Troubleshooting
+
+### Common Issues
+1. **MongoDB connection error** : Check that MongoDB is running
+2. **Agent cannot connect** : Verify server IP/port
+3. **Insufficient permissions** : Run with appropriate privileges for certain metrics
 
 ### Logs
-- Agent : `system_monitor.log`
-- Serveur : `server.log`
-- Analyses : `*.log` dans chaque script
+- Agent: `system_monitor.log`
+- Server: `server.log`
+- Analysis: `*.log` in each script
 
-## 📝 Article de Recherche
+## 📝 Research Publication
 
-Ce système a fait l'objet d'une publication scientifique détaillant les méthodologies de collecte, l'architecture distribuée et les résultats d'analyse des données de surveillance système dans un environnement multi-machines.
+This system has been the subject of a scientific publication detailing collection methodologies, distributed architecture, and system monitoring data analysis results in a multi-machine environment.
 
-## 👥 Auteurs
+## 👥 Authors
 
-- **Delibes** - Développement de l'agent collecteur
-- **Équipe de recherche Master II** - Architecture système et analyse
+- **Delibes** - Collector agent development
+- **System and Networking Research Team or UY1** - System architecture and analysis
+- **Serge Noah**: - [Sergenoah000](mailto:gaetan.noah@facsciences-uy1.cm) Supervision
+- **Kitwé Adagao** - Author
 
-## 📄 Licence
 
-Ce projet est développé dans le cadre d'un projet de recherche Master II.
+## 📄 License
+
+This project is developed as part of a Master II research project.
 
 ---
 
-*Dernière mise à jour : Juillet 2025*
+*Last updated: July 2025*
